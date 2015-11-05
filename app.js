@@ -1,10 +1,8 @@
 //Features to add
-//button allowing switch from F to C
-//format temp
+//stricter searching - search by city id - extra search needed to determine which city then.
 //Background css class dependent on weather
 //day vs night css classes
 //Initial display based on users location
-//format city names 
 
 
 var weatherApp = angular.module('weatherApp', []);
@@ -47,7 +45,7 @@ weatherApp.factory('weatherSrvc', ['$http', '$q', function($http, $q) {
 
 
 		var weather = {
-			city: city,
+	
 		};
 
 
@@ -56,6 +54,7 @@ weatherApp.factory('weatherSrvc', ['$http', '$q', function($http, $q) {
 			console.dir(data);
 			
 			if(data) {
+				weather.city = data.name;
 				if(data.weather[0]) {
 					console.log('yes');
 					weather.main = data.weather[0].main;
@@ -83,3 +82,13 @@ weatherApp.factory('weatherSrvc', ['$http', '$q', function($http, $q) {
 		getWeather: getWeather,
 	}
 }]);
+
+//Takes a tempertature in fahrenheit and formats it, followed by Celsius equivalent
+weatherApp.filter('temperature', function() {
+	return function(temp) {
+			temp = parseInt(temp);
+			var celsius = Math.round((temp - 32) * ( 5/ 9)); 
+			var output = temp + '\xB0F / ' + celsius + '\xB0C';
+			return output;
+	};
+})

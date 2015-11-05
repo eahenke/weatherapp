@@ -10,7 +10,7 @@
 	<div class="main" ng-controller="WeatherCtrl as weather">
 		<p class="lead-in">The weather in {{ weather.currentCity }} is</p>
 		<p class="weather-result"> {{ weather.currentWeather }} </p>
-		<p class="temp"> {{ weather.currentTemp }}</p>
+		<p class="temp"> {{ weather.currentTemp | temperature }}</p>
 		<form ng-submit="weather.update(weather.newCity)">
 			<input type="text" placeholder="Search for a city" ng-model="weather.newCity">
 			<button type="submit">Search</button>
