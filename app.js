@@ -1,44 +1,35 @@
+//Features to add
+//Background css class dependent on weather
+//Initial display based on users location
+//format city names 
+
+
 var weatherApp = angular.module('weatherApp', []);
 
+
+//Main controller.  Controls input and display
 weatherApp.controller('WeatherCtrl', ['weatherSrvc', function(weatherSrvc) {
 	var self = this;
-
-	// self.cur = {
-	// 	city: 'Chicago',
-	// 	main: 'Sunny',
-	// 	temp: '70',
-	// }
 
 	self.currentCity = 'Chicago';
 	self.currentWeather = 'Sunny';
 	self.currentTemp = '70';
 
-	self.search = function(city) {
-		//problem here is an async issue
-		//use $q and deferred objects to set city, main, and temp so that it doesn't have to be the exact same object structure as what the weather service returns
-
+	//Calls weatherSrvc and updates weather info
+	self.update = function(city) {
 		weatherSrvc.getWeather(city).then(function(result) {
 			self.currentCity = result.city;
 			self.currentWeather = result.main;
 			self.currentTemp = result.temp;
-		});
-		
+		});		
 	};
 
 }]);
 
-// weatherApp.controller('SearchCtrl', ['weatherSrvc', function(weatherSrvc) {
-// 	self.search = function(city) {
-// 		weatherSrvc.citySearch(city);
-// 	}
-// }]);
-
+//Weather Service.
 weatherApp.factory('weatherSrvc', ['$http', '$q', function($http, $q) {
-	//code to get weather from openweatherapi here
 
-
-
-	//alter later to expose the necessary methods etc;
+	//Calls OpenWeatherMap API and returns object with city, weather, and temperature
 	var getWeather = function(city) {
 		//replace QUERY with query type - either by city search or more specfic city id
 		//city idea would involve bulk download of city id's and then another search function to determine which city for common names
@@ -59,10 +50,7 @@ weatherApp.factory('weatherSrvc', ['$http', '$q', function($http, $q) {
 
 		$http.jsonp(url).then(function(response) {
 			var data = response.data;
-			//do something with data
-			//console.log(response.data);
-			// console.log(data.weather[0].main);
-
+			
 			if(data) {
 				if(data.weather[0]) {
 					console.log('yes');
@@ -84,7 +72,6 @@ weatherApp.factory('weatherSrvc', ['$http', '$q', function($http, $q) {
 			console.dir(error);
 		});
 
-		// return weather;
 		return defer.promise;
 	}
 

@@ -11,7 +11,7 @@
 		<p class="lead-in">The weather in {{ weather.currentCity }} is</p>
 		<p class="weather-result"> {{ weather.currentWeather }} </p>
 		<p class="temp"> {{ weather.currentTemp }}</p>
-		<form ng-submit="weather.search(weather.newCity)">
+		<form ng-submit="weather.update(weather.newCity)">
 			<input type="text" placeholder="Search for a city" ng-model="weather.newCity">
 			<button type="submit">Search</button>
 		</form>
