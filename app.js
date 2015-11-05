@@ -1,5 +1,8 @@
 //Features to add
+//button allowing switch from F to C
+//format temp
 //Background css class dependent on weather
+//day vs night css classes
 //Initial display based on users location
 //format city names 
 
@@ -38,7 +41,7 @@ weatherApp.factory('weatherSrvc', ['$http', '$q', function($http, $q) {
 
 		// var url = OPEN_WEATHER_PATTERN.replace('QUERY', 'weather?q=' + city + API_KEY);
 
-		var url = 'http://api.openweathermap.org/data/2.5/weather?q=' + city + API_KEY + '&callback=JSON_CALLBACK';
+		var url = 'http://api.openweathermap.org/data/2.5/weather?q=' + city + '&units=imperial' + API_KEY + '&callback=JSON_CALLBACK';
 
 		var defer = $q.defer();
 
@@ -50,6 +53,7 @@ weatherApp.factory('weatherSrvc', ['$http', '$q', function($http, $q) {
 
 		$http.jsonp(url).then(function(response) {
 			var data = response.data;
+			console.dir(data);
 			
 			if(data) {
 				if(data.weather[0]) {
