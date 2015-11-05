@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Weather</title>
+	<meta charset="utf-8" />
+	<meta name="author" content="Eric Henke" />
+	<meta name="viewport" content="width=device-width" /> 
+</head>
+<body ng-app="weatherApp">
+	<div class="main" ng-controller="WeatherCtrl as weather">
+		<p class="lead-in">The weather in {{ weather.currentCity }} is</p>
+		<p class="weather-result"> {{ weather.currentWeather }} </p>
+		<p class="temp"> {{ weather.currentTemp }}</p>
+		<form ng-submit="weather.search(weather.newCity)">
+			<input type="text" placeholder="Search for a city" ng-model="weather.newCity">
+			<button type="submit">Search</button>
+		</form>
+
+	</div>
+
+
+	<!-- Scripts -->
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.0-beta.5/angular.min.js"></script>
+    <script type="text/javascript" src="app.js"></script>
+</body>
+</html>
