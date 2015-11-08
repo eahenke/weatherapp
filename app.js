@@ -3,9 +3,10 @@
 //Background css class dependent on weather
 //day vs night css classes
 //Initial display based on users location
+//clock
 
 
-var weatherApp = angular.module('weatherApp', []);
+var weatherApp = angular.module('weatherApp', ['clockApp']);
 
 
 //Main controller.  Controls input and display

@@ -8,6 +8,7 @@
 </head>
 <body ng-app="weatherApp">
 	<div class="main" ng-controller="WeatherCtrl as weather">
+		<clock></clock>
 		<p class="lead-in">The weather in {{ weather.currentCity }} is</p>
 		<p class="weather-result"> {{ weather.currentWeather }} </p>
 		<p class="temp"> {{ weather.currentTemp | temperature }}</p>
@@ -20,7 +21,8 @@
 
 
 	<!-- Scripts -->
-	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.0-beta.5/angular.min.js"></script>
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.0-beta.5/angular.js"></script>
     <script type="text/javascript" src="app.js"></script>
+    <script type="text/javascript" src="components/clock/clock-directive.js"></script>
 </body>
 </html>
