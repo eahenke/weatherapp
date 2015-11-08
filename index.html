@@ -5,8 +5,12 @@
 	<meta charset="utf-8" />
 	<meta name="author" content="Eric Henke" />
 	<meta name="viewport" content="width=device-width" /> 
+
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.0-beta.5/angular.js"></script>
+	<script type="text/javascript" src="dist/js/app.min.js"></script>	
+
 </head>
-<body ng-app="app">
+<body ng-app="app" ng-cloak>
 	<div class="main" ng-controller="WeatherCtrl as weather">
 		<clock></clock>
 		<p class="lead-in">The weather in {{ weather.currentCity }} is</p>
@@ -16,20 +20,6 @@
 			<input type="text" placeholder="Search for a city" ng-model="weather.newCity">
 			<button type="submit">Search</button>
 		</form>
-
-	</div>
-
-
-	<!-- Scripts -->
-	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.0-beta.5/angular.js"></script>
-    <script type="text/javascript" src="app.js"></script>
-
-    <script type="text/javascript" src="components/weather/weather-module.js"></script>
-    <script type="text/javascript" src="components/weather/weather-filters.js"></script>
-    <script type="text/javascript" src="components/weather/weather-service.js"></script>
-    <script type="text/javascript" src="components/weather/weather-controller.js"></script>
-
-
-    <script type="text/javascript" src="components/clock/clock-directive.js"></script>
+	</div>	
 </body>
 </html>

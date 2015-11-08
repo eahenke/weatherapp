@@ -19,19 +19,14 @@
             var defer = $q.defer();
 
 
-            var weather = {
-        
-            };
-
+            var weather = {};
 
             $http.jsonp(url).then(function(response) {
                 var data = response.data;
-                console.dir(data);
-                
+                                
                 if(data) {
                     weather.city = data.name;
                     if(data.weather[0]) {
-                        console.log('yes');
                         weather.main = data.weather[0].main;
                     }
 
