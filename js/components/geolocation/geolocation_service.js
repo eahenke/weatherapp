@@ -3,6 +3,7 @@
 
     geolocation.factory('geolocationService', ['$q', function($q) {
 
+        //Gets user location, if geolocation enabled.
         var getLocation = function() {
             var defer = $q.defer();
 

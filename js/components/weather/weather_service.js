@@ -3,7 +3,7 @@
     var weatherApp = angular.module('weatherApp');
 
     //Weather Service
-    weatherApp.factory('weatherSrvc', ['$http', '$q', function($http, $q) 
+    weatherApp.factory('weatherSrvc', ['$http', '$q', function($http, $q) {
         
         //API constants
         var OPEN_WEATHER_URL = 'http://api.openweathermap.org/data/2.5/weather';
