@@ -65,6 +65,7 @@
 
             if(navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(function(position){
+                    // console.dir(position);
                     defer.resolve(position.coords);
 
                 }, function(error) {
@@ -93,11 +94,12 @@
 
         //initial default
         var defaultCity = 'Chicago';
-        // self.currentCity = 'Chicago';
 
         function getCurrent() {
             geolocationService.getLocation().then(function(result) {
-                self.searchByCoord(result);    
+                var lat = result.latitude;
+                var lon = result.longitude;                
+                self.searchByCoord(lat, lon);    
             }, function(error) { //user blocked                
                 self.searchByCity(defaultCity);
             });
@@ -118,8 +120,8 @@
             });     
         };
 
-        self.searchByCoord = function(coords) {
-            weatherSrvc.getWeatherByCoord(coords).then(function(result) {
+        self.searchByCoord = function(lat, lon) {
+            weatherSrvc.getWeatherByCoord(lat, lon).then(function(result) {
                 self.currentCity = result.city;
                 self.currentWeather = result.main;
                 self.currentTemp = result.temp;
@@ -158,26 +160,20 @@
     var weatherApp = angular.module('weatherApp');
 
     //Weather Service.
-    weatherApp.factory('weatherSrvc', ['$http', '$q', function($http, $q) {
-
+    weatherApp.factory('weatherSrvc', ['$http', '$q', function($http, $q) 
         
-        var OPEN_WEATHER_PATTERN = 'http://api.openweathermap.org/data/2.5/weather';
-        var API_KEY = '&APPID=a0d7e44cdb26abb996246b544a26f161';
-        var api = 'a0d7e44cdb26abb996246b544a26f161';
-        var callback = '&callback=JSON_CALLBACK';
-        var units = '&units=imperial';
+        var OPEN_WEATHER_URL = 'http://api.openweathermap.org/data/2.5/weather';
+        var API_KEY = 'a0d7e44cdb26abb996246b544a26f161';
 
-
-
-        var getWeatherByCoord = function(coords) {
+        var getWeatherByCoord = function(lat, lon) {
             var options = {
                 method: 'jsonp',
-                url: OPEN_WEATHER_PATTERN,
+                url: OPEN_WEATHER_URL,
                 params: {
-                    lat: coords.latitude,
-                    lon: coords.longitude,
+                    lat: lat,
+                    lon: lon,
                     units: 'imperial',
-                    APPID: api,
+                    APPID: API_KEY,
                     callback: 'JSON_CALLBACK',
                 }                
             };
@@ -188,11 +184,11 @@
         var getWeatherByCity = function(city) {
             var options = {
                 method: 'jsonp',
-                url: OPEN_WEATHER_PATTERN,
+                url: OPEN_WEATHER_URL,
                 params: {
                     q: city,
                     units: 'imperial',
-                    APPID: api,
+                    APPID: API_KEY,
                     callback: 'JSON_CALLBACK',
                 }                
             };

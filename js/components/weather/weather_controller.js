@@ -6,11 +6,12 @@
 
         //initial default
         var defaultCity = 'Chicago';
-        // self.currentCity = 'Chicago';
 
         function getCurrent() {
             geolocationService.getLocation().then(function(result) {
-                self.searchByCoord(result);    
+                var lat = result.latitude;
+                var lon = result.longitude;                
+                self.searchByCoord(lat, lon);    
             }, function(error) { //user blocked                
                 self.searchByCity(defaultCity);
             });
@@ -31,8 +32,8 @@
             });     
         };
 
-        self.searchByCoord = function(coords) {
-            weatherSrvc.getWeatherByCoord(coords).then(function(result) {
+        self.searchByCoord = function(lat, lon) {
+            weatherSrvc.getWeatherByCoord(lat, lon).then(function(result) {
                 self.currentCity = result.city;
                 self.currentWeather = result.main;
                 self.currentTemp = result.temp;

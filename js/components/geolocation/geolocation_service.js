@@ -8,6 +8,7 @@
 
             if(navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(function(position){
+                    // console.dir(position);
                     defer.resolve(position.coords);
 
                 }, function(error) {
