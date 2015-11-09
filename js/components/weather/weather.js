@@ -1,3 +1,3 @@
 ;(function(window) {
-    var weatherApp = angular.module('weatherApp', ['clockApp']);
+    var weatherApp = angular.module('weatherApp', ['geolocation']);
 })(window);
