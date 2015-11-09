@@ -1,5 +1,5 @@
 ;(function(window) {
-    var clockApp = angular.module('clockApp', []);
+    var clockApp = angular.module('clockApp');
 
     clockApp.directive('clock', ['$interval', 'dateFilter', function($interval, dateFilter) {
         return {
