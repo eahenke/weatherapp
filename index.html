@@ -12,7 +12,7 @@
 </head>
 <body ng-app="app" ng-cloak>
 	<div class="main" ng-controller="WeatherCtrl as weather">
-		<clock time="{{ weather.time }}"></clock>
+		<clock timezone="{{weather.timezone}}"></clock>
 		<p class="lead-in">The weather in {{ weather.currentCity }} is</p>
 		<p class="weather-result"> {{ weather.currentWeather }} </p>
 		<p class="temp" ng-bind="weather.currentTemp | temperature"></p>

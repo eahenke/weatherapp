@@ -6,9 +6,9 @@
             restricted: 'E',
             scope: {
                 format: '@?',
+                
             },
-            link: function(scope, element) {
-
+            link: function(scope, element, attrs) {
                 //default to hour, minutes
                 if(scope.format == undefined) {
                     scope.format = 'h:mm a';
@@ -17,7 +17,7 @@
                 var timeoutId;
 
                 function updateTime() {
-                    element.text(dateFilter(new Date(), scope.format));
+                    element.text(dateFilter(new Date(), scope.format, attrs.timezone));
                 }
 
                 //always destroy $intervals

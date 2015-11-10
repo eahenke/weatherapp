@@ -2,6 +2,99 @@
 	angular.module('app', ['weatherApp', 'clockApp', 'geolocation']);
 })(window);
 
+;(function(window){
+    var geolocation = angular.module('geolocation', []);
+})(window);
+;(function(window) {
+    var geolocation = angular.module('geolocation');
+
+    geolocation.factory('geolocationService', ['$q', '$http', function($q, $http) {
+
+        //Gets user location, if geolocation enabled.
+        var getLocation = function() {
+            var defer = $q.defer();
+
+            if(navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position){
+                    defer.resolve(position.coords);
+
+                }, function(error) {
+                    defer.reject(error);
+                });
+            } else { //disabled
+                defer.reject(false);
+            }
+
+            return defer.promise;
+        }
+
+        //Takes a latitude and longitude and calls tp World Weather Online Timezone API and returns UTC offset
+        var getLocalTime = function(lat, lon) {
+            var API_KEY = 'a7ca14d429ae359cdab7761182aab';
+
+            var options = {
+                url: 'http://api.worldweatheronline.com/free/v2/tz.ashx',
+                method: 'jsonp',
+                params: {
+                    q: lat + ',' + lon,
+                    format: 'json',
+                    key: API_KEY,
+                    callback: 'JSON_CALLBACK'
+                }
+            }
+
+            var defer = $q.defer();
+
+            $http.jsonp(options.url, options).then(function(response) {
+                var offset = response.data.data['time_zone'][0].utcOffset;         
+                var timezone = offsetFormat(offset);
+                defer.resolve(timezone);
+            }, function(error) {
+                //debuging, add better error handling later
+                console.dir(error);
+                defer.reject(error);
+            });
+
+            return defer.promise;
+
+        };
+
+        //Takes an offset string in the form '(-)h.m' and returns offset in form of (-)hhmm 
+        function offsetFormat(offset) {
+            var split, sign, hours, minutes;
+            if(offset.charAt(0) == '-') {
+                sign = '-';
+                split = offset.slice(1).split('.');
+            } else {
+                sign = '+';
+                split = offset.split('.');
+            }
+            hours = split[0];
+            minutes = split[1];
+
+            //convert percentage to minutes
+            if(minutes == '50') {
+                minutes = '30';
+            }
+
+            //add padding
+            if(hours.length < 2) {
+                hours = '0' + hours;
+            }
+            if(minutes.length < 2) {
+                minutes += '0';
+            }
+
+            return sign + hours + minutes;
+        }
+
+        //exposed methods
+        return {
+            getLocation: getLocation,
+            getLocalTime: getLocalTime
+        }
+    }]);
+})(window);
 ;(function(window) {
     var clockApp = angular.module('clockApp', []);
 })(window);
@@ -13,9 +106,9 @@
             restricted: 'E',
             scope: {
                 format: '@?',
+                
             },
-            link: function(scope, element) {
-
+            link: function(scope, element, attrs) {
                 //default to hour, minutes
                 if(scope.format == undefined) {
                     scope.format = 'h:mm a';
@@ -24,7 +117,7 @@
                 var timeoutId;
 
                 function updateTime() {
-                    element.text(dateFilter(new Date(), scope.format));
+                    element.text(dateFilter(new Date(), scope.format, attrs.timezone));
                 }
 
                 //always destroy $intervals
@@ -44,70 +137,6 @@
     }]);
 
 })(window);
-;(function(window){
-    var geolocation = angular.module('geolocation', []);
-})(window);
-;(function(window) {
-    var geolocation = angular.module('geolocation');
-
-    geolocation.factory('geolocationService', ['$q', '$http', function($q, $http) {
-
-        //Gets user location, if geolocation enabled.
-        var getLocation = function() {
-            var defer = $q.defer();
-
-            if(navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(function(position){
-                    // console.dir(position);
-                    defer.resolve(position.coords);
-
-                }, function(error) {
-                    defer.reject(error);
-                });
-            } else { //disabled
-                defer.reject(false);
-            }
-
-            return defer.promise;
-        }
-
-        //Takes a latitude and longitude and determines timezone and returns UT-offset
-        var getLocalTime = function(lat, lon) {
-            var API_KEY = 'a7ca14d429ae359cdab7761182aab';
-
-            var options = {
-                url: 'http://api.worldweatheronline.com/free/v2/tz.ashx',
-                method: 'jsonp',
-                params: {
-                    q: lat + ',' + lon,
-                    format: 'json',
-                    key: API_KEY,
-                    callback: 'JSON_CALLBACK'
-                }
-            }
-
-            var defer = $q.defer();
-
-            $http.jsonp(options.url, options).then(function(response) {
-                var localTime = response.data.data['time_zone'][0].localtime;
-                defer.resolve(localTime);
-            }, function(error) {
-                //debuging, add better error handling later
-                console.dir(error);
-                defer.reject(error);
-            });
-
-            return defer.promise;
-
-        };
-
-        //exposed methods
-        return {
-            getLocation: getLocation,
-            getLocalTime: getLocalTime
-        }
-    }]);
-})(window);
 ;(function(window) {
     var weatherApp = angular.module('weatherApp', ['geolocation']);
 })(window);
@@ -117,36 +146,17 @@
     weatherApp.controller('WeatherCtrl', ['weatherSrvc', 'geolocationService', function(weatherSrvc, geolocationService) {
         var self = this;
 
-        self.time;
 
-        //initial default
+        //initial defaults
+        self.timezone = '';
         var defaultCity = 'Chicago';
 
-        function getCurrent() {
-            geolocationService.getLocation().then(function(result) {
-                var lat = result.latitude;
-                var lon = result.longitude;  
-                self.searchByCoord(lat, lon);
-                // getLocalTime(lat, lon);
-                // geolocationService.getLocalTime(lat, lon).then(function(response){
-                //     console.log(response);
-                // });    
 
-            }, function(error) { //user blocked                
-                self.searchByCity(defaultCity);
-            });
-        };
-
-        //Calls weatherSrvc and updates weather info
-        //abstract out the guts of these functions, they're the same
-        //something like assignResults
-
+        //Calls weatherSrvc, searched by city
         self.searchByCity = function(city) {
+            self.newCity = '';
             weatherSrvc.getWeatherByCity(city).then(function(result) {
-                self.currentCity = result.city.name;
-                self.currentWeather = result.main;
-                self.currentTemp = result.temp;
-
+                update(result);
                 getLocalTime(result.city.lat, result.city.lon);
             }, function(error){
                 //for debug
@@ -154,11 +164,10 @@
             });     
         };
 
+        //Calls weatherSrvc, searches by lat, lon
         self.searchByCoord = function(lat, lon) {
             weatherSrvc.getWeatherByCoord(lat, lon).then(function(result) {
-                self.currentCity = result.city.name;
-                self.currentWeather = result.main;
-                self.currentTemp = result.temp;
+                update(result);
                 getLocalTime(lat, lon);
             }, function(error) {
                 //for debug
@@ -166,20 +175,34 @@
             });     
         };
 
+        //Calls geolocation service to get local lat, lon and searches by lat, lon
+        function getCurrent() {
+            geolocationService.getLocation().then(function(result) {
+                var lat = result.latitude;
+                var lon = result.longitude;  
+                self.searchByCoord(lat, lon);
+                
+            }, function(error) { //user blocked                
+                self.searchByCity(defaultCity);
+            });
+        };
+
+        //get local timezone by lat, lon and set timezone
         function getLocalTime(lat, lon) {
             geolocationService.getLocalTime(lat, lon).then(function(time) {
-                self.time = time;
-                console.log(self.time);
+                self.timezone = time;
             }, function(error) {
-
+                console.dir(error);
             });
         }
 
-        // function getPlaceNameByCoords(lat, lon) {
-        //     geolocationService.getPlaceNameByCoords(lat, lon);
-        // }
+        //update city, weather, temp
+        function update(result) {
+            self.currentCity = result.city.name;
+            self.currentWeather = result.main;
+            self.currentTemp = result.temp;
+        }
 
-        // self.update(self.currentCity);
         getCurrent();
 
     }]);
