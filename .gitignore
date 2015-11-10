@@ -1,4 +1,5 @@
 node_modules/
 gulpfile.js
+dist/js/
 keys.js
 *.txt

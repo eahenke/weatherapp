@@ -2,6 +2,48 @@
 	angular.module('app', ['weatherApp', 'clockApp', 'geolocation']);
 })(window);
 
+;(function(window) {
+    var clockApp = angular.module('clockApp', []);
+})(window);
+;(function(window) {
+    var clockApp = angular.module('clockApp');
+
+    clockApp.directive('clock', ['$interval', 'dateFilter', function($interval, dateFilter) {
+        return {
+            restricted: 'E',
+            scope: {
+                format: '@?',
+                
+            },
+            link: function(scope, element, attrs) {
+                //default to hour, minutes
+                if(scope.format == undefined) {
+                    scope.format = 'h:mm a';
+                }
+
+                var timeoutId;
+
+                function updateTime() {
+                    element.text(dateFilter(new Date(), scope.format, attrs.timezone));
+                }
+
+                //always destroy $intervals
+                element.on('$destroy', function() {
+                    $interval.cancel(timeoutId);
+                });
+
+                //update every second
+                timeoutId = $interval(function() {
+                    updateTime();
+                }, 1000);
+
+                //initialize
+                updateTime();
+            }
+        }
+    }]);
+
+})(window);
 ;(function(window){
     var geolocation = angular.module('geolocation', []);
 })(window);
@@ -94,48 +136,6 @@
             getLocalTime: getLocalTime
         }
     }]);
-})(window);
-;(function(window) {
-    var clockApp = angular.module('clockApp', []);
-})(window);
-;(function(window) {
-    var clockApp = angular.module('clockApp');
-
-    clockApp.directive('clock', ['$interval', 'dateFilter', function($interval, dateFilter) {
-        return {
-            restricted: 'E',
-            scope: {
-                format: '@?',
-                
-            },
-            link: function(scope, element, attrs) {
-                //default to hour, minutes
-                if(scope.format == undefined) {
-                    scope.format = 'h:mm a';
-                }
-
-                var timeoutId;
-
-                function updateTime() {
-                    element.text(dateFilter(new Date(), scope.format, attrs.timezone));
-                }
-
-                //always destroy $intervals
-                element.on('$destroy', function() {
-                    $interval.cancel(timeoutId);
-                });
-
-                //update every second
-                timeoutId = $interval(function() {
-                    updateTime();
-                }, 1000);
-
-                //initialize
-                updateTime();
-            }
-        }
-    }]);
-
 })(window);
 ;(function(window) {
     var weatherApp = angular.module('weatherApp', ['geolocation']);
