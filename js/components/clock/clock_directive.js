@@ -6,10 +6,9 @@
             restricted: 'E',
             scope: {
                 format: '@?',
-
             },
             link: function(scope, element) {
-                
+
                 //default to hour, minutes
                 if(scope.format == undefined) {
                     scope.format = 'h:mm a';

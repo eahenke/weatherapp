@@ -51,7 +51,12 @@
                 var data = response.data;
                                 
                 if(data) {
-                    weather.city = data.name;
+                    weather.city = {
+                        name: data.name,
+                        lat: data.coord.lat,
+                        lon: data.coord.lon,
+                    };
+                    
                     if(data.weather[0]) {
                         weather.main = data.weather[0].main;
                     }

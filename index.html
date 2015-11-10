@@ -7,12 +7,12 @@
 	<meta name="viewport" content="width=device-width" /> 
 
 	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.0-beta.5/angular.js"></script>
-	<script type="text/javascript" src="dist/js/app.min.js"></script>	
+	<script type="text/javascript" src="dist/js/app.js"></script>	
 
 </head>
 <body ng-app="app" ng-cloak>
 	<div class="main" ng-controller="WeatherCtrl as weather">
-		<clock></clock>
+		<clock time="{{ weather.time }}"></clock>
 		<p class="lead-in">The weather in {{ weather.currentCity }} is</p>
 		<p class="weather-result"> {{ weather.currentWeather }} </p>
 		<p class="temp" ng-bind="weather.currentTemp | temperature"></p>
