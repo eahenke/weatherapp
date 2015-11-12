@@ -23,15 +23,14 @@
 
         //Takes a latitude and longitude and calls tp World Weather Online Timezone API and returns UTC offset
         var getLocalTime = function(lat, lon) {
-            var API_KEY = 'a7ca14d429ae359cdab7761182aab';
 
             var options = {
-                url: 'http://api.worldweatheronline.com/free/v2/tz.ashx',
+                url: 'http://api.geonames.org/timezoneJSON',
                 method: 'jsonp',
                 params: {
-                    q: lat + ',' + lon,
-                    format: 'json',
-                    key: API_KEY,
+                    lat: lat,
+                    lng: lon,
+                    username: 'demo',
                     callback: 'JSON_CALLBACK'
                 }
             }
@@ -39,8 +38,9 @@
             var defer = $q.defer();
 
             $http.jsonp(options.url, options).then(function(response) {
-                var offset = response.data.data['time_zone'][0].utcOffset;         
+                var offset = response.data.rawOffset;
                 var timezone = offsetFormat(offset);
+
                 defer.resolve(timezone);
             }, function(error) {
                 //debuging, add better error handling later
@@ -52,9 +52,11 @@
 
         };
 
-        //Takes an offset string in the form '(-)h.m' and returns offset in form of (-)hhmm 
-        function offsetFormat(offset) {
+        //Takes an offset string in the form '(-)h(.m)'  and returns offset in form of '(-/+)hhmm' 
+        function offsetFormat(offset) {            
             var split, sign, hours, minutes;
+            offset = offset.toString();
+
             if(offset.charAt(0) == '-') {
                 sign = '-';
                 split = offset.slice(1).split('.');
@@ -66,16 +68,15 @@
             minutes = split[1];
 
             //convert percentage to minutes
-            if(minutes == '50') {
+            if(minutes == '5') {
                 minutes = '30';
+            } else {
+                minutes = '00';
             }
 
             //add padding
             if(hours.length < 2) {
                 hours = '0' + hours;
-            }
-            if(minutes.length < 2) {
-                minutes += '0';
             }
 
             return sign + hours + minutes;

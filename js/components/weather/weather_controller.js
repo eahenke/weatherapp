@@ -15,7 +15,7 @@
             self.newCity = '';
             weatherSrvc.getWeatherByCity(city).then(function(result) {
                 update(result);
-                //getLocalTime(result.city.lat, result.city.lon);
+                getLocalTime(result.city.lat, result.city.lon);
             }, function(error){
                 //for debug
                 console.dir(error);
@@ -26,7 +26,7 @@
         self.searchByCoord = function(lat, lon) {
             weatherSrvc.getWeatherByCoord(lat, lon).then(function(result) {
                 update(result);
-                //getLocalTime(lat, lon);
+                getLocalTime(lat, lon);
             }, function(error) {
                 //for debug
                 console.dir(error);
