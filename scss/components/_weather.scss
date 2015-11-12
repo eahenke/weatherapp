@@ -1,28 +1,36 @@
-.weather {
-  min-height: 100%;
+$color__day: rgba(0, 50, 255, 0.5);
+$color__night: rgba(0, 0, 0, 0.8);
+$font__base_size: 1.5;
+
+
+.weather, .weather-wrap {
+  display: block;
   height: 100%;
-  width: 100%;
   overflow: hidden;
 }
 
-.day {
-  background-color: rgba(0, 50, 255, 0.5);
-}
-
-.night {
-  background-color: rgba(0, 0, 0, 0.8);
-}
-
 .weather-wrap {
+  padding-top: 2em;
+}
+
+.weather-widget.day {
+  background-color: $color__day;
+}
+
+.weather-widget.night {
+  background-color: $color__night;
+}
+
+.weather-widget {
   @extend %center-block;
+  min-width: 250px;
+  max-width: 400px;
   width: 25%;
-  // height: $weather-wrap-height * 1px;
-  margin-top: 2em;
   padding: 0.5em;
-  text-align: center;
-  // too broad, change this
   color: white;
-  // background-color: rgba(0, 0, 0, 0.8);
+  // fallback color while waiting for day/night to return
+  background-color: #777;
+  text-align: center;
   border-radius: 5%;
   overflow: hidden;
 
@@ -32,40 +40,56 @@
   }
 
   form {
-    display: block;
     width: 100%;
     color: #333;
     padding: 0.5em;
     @extend %center-block;
 
+    input {
+      max-width: 75%;
+      outline: 0;
+      border: none;
+      height: 30px;
+
+      &:focus, &:invalid {
+        outline: 0;
+        box-shadow: none;
+      }
+    }
+
     button {
-      @include flat-button(20%, 40px);
+      @include flat-button(50px, 40px);
       border-radius: 5%;
     }
   }
+}
 
-  * {
-    // border: 1px solid red;
-  }
+.city {
+  font-size: $font__base_size * 2 * 1em;
+}
+
+clock {
+  display: block;
+  font-size: 1.3rem;
 }
 
 .wthr-result {
+  display: inline-block;
+  padding: 0;
+  text-align: center;
   overflow: hidden;
 
-  div {
+  li {
     display: inline-block;
     height: 100%;
     float: left;
-    font-size: 1.5em;
   }
 
   .wthr-icon {
-    width: 40%;
     font-size: 4em;
   }
 
   .wthr-descrip {
-    width: 60%;
     line-height: 200%;
     vertical-align: middle;
     text-align: center;
@@ -76,20 +100,25 @@
   }
 }
 
-.temp {
-  font-size: 1.3em;
+.temp, li {
+  font-size: $font__base_size * 1em;
 }
 
-.city {
-  font-size: 3rem;
-}
+@media screen and (max-width: 800px) {
+  //full screen widget on small screens
+  .weather-wrap {
+    padding: 0;
+  }
 
-.clock-wrap {
-  position: relative;
-}
+  .weather-widget {
+    width: 100%;
+    max-width: none;
+    height: 100%;
+    margin: 0;
+    border-radius: 0;
 
-clock {
-  display: block;
-  font-size: 1.3rem;
-  @extend %vertical-align;
+    .city {
+      margin-top: 1em;
+    }
+  }
 }

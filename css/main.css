@@ -476,20 +476,13 @@ table {
 /* Fade */
 /* Flat button, centered text */
 /* Center block */
-.weather-wrap, .weather-wrap form {
+.weather-widget, .weather-widget form {
   display: block;
   margin-left: auto;
   margin-right: auto;
 }
 
 /* Vertical align */
-clock {
-  position: relative;
-  top: 50%;
-  -webkit-transform: translateY(-50%);
-          transform: translateY(-50%);
-}
-
 /* Ellipsis for cut-off text */
 @font-face {
   font-family: 'weather-icons';
@@ -581,42 +574,56 @@ clock {
 }
 
 /* 'εáê' */
-.weather {
-  min-height: 100%;
+.weather, .weather-wrap {
+  display: block;
   height: 100%;
-  width: 100%;
   overflow: hidden;
-}
-
-.day {
-  background-color: rgba(0, 50, 255, 0.5);
-}
-
-.night {
-  background-color: rgba(0, 0, 0, 0.8);
 }
 
 .weather-wrap {
+  padding-top: 2em;
+}
+
+.weather-widget.day {
+  background-color: rgba(0, 50, 255, 0.5);
+}
+
+.weather-widget.night {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+.weather-widget {
+  min-width: 250px;
+  max-width: 400px;
   width: 25%;
-  margin-top: 2em;
   padding: 0.5em;
-  text-align: center;
   color: white;
+  background-color: #777;
+  text-align: center;
   border-radius: 5%;
   overflow: hidden;
 }
-.weather-wrap > * {
+.weather-widget > * {
   margin-top: 0;
   margin-bottom: 1rem;
 }
-.weather-wrap form {
-  display: block;
+.weather-widget form {
   width: 100%;
   color: #333;
   padding: 0.5em;
 }
-.weather-wrap form button {
-  width: 20%;
+.weather-widget form input {
+  max-width: 75%;
+  outline: 0;
+  border: none;
+  height: 30px;
+}
+.weather-widget form input:focus, .weather-widget form input:invalid {
+  outline: 0;
+  box-shadow: none;
+}
+.weather-widget form button {
+  width: 50px;
   height: 40px;
   border: none;
   line-height: 40px;
@@ -626,35 +633,44 @@ clock {
   /* Links in buttons fill whole button */
   border-radius: 5%;
 }
-.weather-wrap form button:focus {
+.weather-widget form button:focus {
   border: none;
   outline: 0;
 }
-.weather-wrap form button:active {
-  -webkit-transform: scale(0.8);
-          transform: scale(0.8);
+.weather-widget form button:active {
+  -webkit-transform: scale(0.9);
+          transform: scale(0.9);
 }
-.weather-wrap form button > a {
+.weather-widget form button > a {
   display: block;
   width: 100%;
   height: 100%;
 }
 
+.city {
+  font-size: 3em;
+}
+
+clock {
+  display: block;
+  font-size: 1.3rem;
+}
+
 .wthr-result {
+  display: inline-block;
+  padding: 0;
+  text-align: center;
   overflow: hidden;
 }
-.wthr-result div {
+.wthr-result li {
   display: inline-block;
   height: 100%;
   float: left;
-  font-size: 1.5em;
 }
 .wthr-result .wthr-icon {
-  width: 40%;
   font-size: 4em;
 }
 .wthr-result .wthr-descrip {
-  width: 60%;
   line-height: 200%;
   vertical-align: middle;
   text-align: center;
@@ -663,19 +679,23 @@ clock {
   text-transform: uppercase;
 }
 
-.temp {
-  font-size: 1.3em;
+.temp, li {
+  font-size: 1.5em;
 }
 
-.city {
-  font-size: 3rem;
-}
+@media screen and (max-width: 800px) {
+  .weather-wrap {
+    padding: 0;
+  }
 
-.clock-wrap {
-  position: relative;
-}
-
-clock {
-  display: block;
-  font-size: 1.3rem;
+  .weather-widget {
+    width: 100%;
+    max-width: none;
+    height: 100%;
+    margin: 0;
+    border-radius: 0;
+  }
+  .weather-widget .city {
+    margin-top: 1em;
+  }
 }

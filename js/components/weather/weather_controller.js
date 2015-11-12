@@ -6,8 +6,8 @@
 
 
         //initial defaults
-        self.timezone = '';
-        var defaultCity = 'Chicago';
+        self.currentCity = 'Chicago';
+        self.timezone = '-0600';
 
 
         //Calls weatherSrvc, searched by city
@@ -15,7 +15,7 @@
             self.newCity = '';
             weatherSrvc.getWeatherByCity(city).then(function(result) {
                 update(result);
-                getLocalTime(result.city.lat, result.city.lon);
+                //getLocalTime(result.city.lat, result.city.lon);
             }, function(error){
                 //for debug
                 console.dir(error);
@@ -26,7 +26,7 @@
         self.searchByCoord = function(lat, lon) {
             weatherSrvc.getWeatherByCoord(lat, lon).then(function(result) {
                 update(result);
-                getLocalTime(lat, lon);
+                //getLocalTime(lat, lon);
             }, function(error) {
                 //for debug
                 console.dir(error);
@@ -35,13 +35,15 @@
 
         //Calls geolocation service to get local lat, lon and searches by lat, lon
         function getCurrent() {
+
             geolocationService.getLocation().then(function(result) {
+
                 var lat = result.latitude;
                 var lon = result.longitude;  
                 self.searchByCoord(lat, lon);
                 
             }, function(error) { //user blocked                
-                self.searchByCity(defaultCity);
+                self.searchByCity(self.currentCity);
             });
         };
 
