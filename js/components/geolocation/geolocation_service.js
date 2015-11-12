@@ -30,7 +30,7 @@
                 params: {
                     lat: lat,
                     lng: lon,
-                    username: 'demo',
+                    username: 'eahenke',
                     callback: 'JSON_CALLBACK'
                 }
             }

@@ -1,6 +1,6 @@
 node_modules/
 gulpfile.js
 .sass-cache/
-dist/js/
-keys.js
+dist/
+js/keys.js
 *.txt

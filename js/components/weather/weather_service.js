@@ -7,7 +7,7 @@
         
         //API constants
         var OPEN_WEATHER_URL = 'http://api.openweathermap.org/data/2.5/weather';
-        var API_KEY = 'a0d7e44cdb26abb996246b544a26f161';
+        var API_KEY = apiKeys.openWeatherMap;
 
         //Format http request config object for searching by lat/lon
         var getWeatherByCoord = function(lat, lon) {
@@ -89,12 +89,6 @@
 
         //Determines icon class based on weather-code for type, and iconCode for day vs night.  Relevant codes from openweathermap.com
         function getIconClass(weatherCode, time) {
-            // var time = '';
-            
-            // //icon codes are in the form of 'XXd' or 'XXn'
-            // if(iconCode) {
-            //     time = iconCode.slice(-1) == 'd' ? 'day' : 'night';           
-            // }
 
             var firstDigit = weatherCode.toString().charAt(0);
             var icon;

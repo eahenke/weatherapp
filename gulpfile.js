@@ -11,7 +11,7 @@ var autoprefixer = require('gulp-autoprefixer');
 var gutil = require('gulp-util');
 
 gulp.task('scripts', function() {
-    return gulp.src('js/**/*.js')
+    return gulp.src(['js/**/*.js', '!js/keys.example.js'])
         .pipe(concat('app.js'))
         .pipe(gulp.dest('dist/js'))
         .pipe(rename('app.min.js'))
@@ -23,7 +23,8 @@ gulp.task('sass', function() {
     return sass('scss/main.scss', {style: 'expanded'})
         .on('error', sass.logError)
         .pipe(autoprefixer('last 2 version'))
-        .pipe(gulp.dest('css'));
+        .pipe(gulp.dest('css'))
+        .pipe(gulp.dest('dist/css'));
 });
 
 gulp.task('watch', function() {
