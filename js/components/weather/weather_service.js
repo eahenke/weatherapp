@@ -60,6 +60,13 @@
                     
                     if(data.weather[0]) {
                         weather.main = data.weather[0].main;
+                        weather.description = data.weather[0].description;
+                        
+                        var iconCode = data.weather[0].icon;
+                        var weatherCode = data.weather[0].id;
+                        
+                        weather.dayOrNight = getDayOrNight(iconCode);
+                        weather.iconClass = getIconClass(weatherCode, weather.dayOrNight);
                     }
 
                     if(data.main) {
@@ -79,7 +86,49 @@
             });
 
             return defer.promise;
-        }         
+        }
+
+        //Determines icon class based on weather-code for type, and iconCode for day vs night.  Relevant codes from openweathermap.com
+        function getIconClass(weatherCode, time) {
+            // var time = '';
+            
+            // //icon codes are in the form of 'XXd' or 'XXn'
+            // if(iconCode) {
+            //     time = iconCode.slice(-1) == 'd' ? 'day' : 'night';           
+            // }
+
+            var firstDigit = weatherCode.toString().charAt(0);
+            var icon;
+
+            if(weatherCode == 800) {
+                icon = 'icon-clear-' + time;
+            }else if(firstDigit == '8') {
+                icon = 'icon-cloud-' + time;
+            } else {
+                //Weather codes from openweathermap.com
+                var codeTable = {
+                    '2' : 'thunder',
+                    '3' : 'rain',
+                    '5' : 'rain',
+                    '6' : 'snow',
+                    '7' : 'mist',
+                }
+                icon = 'icon-' + codeTable[firstDigit];
+            }
+
+            return icon;
+        }
+
+        //Checks icon code to determine day or night
+        function getDayOrNight(iconCode) {
+            var time = '';
+            
+            //icon codes are in the form of 'XXd' or 'XXn'
+            if(iconCode) {
+                time = iconCode.slice(-1) == 'd' ? 'day' : 'night';           
+            }            
+            return time;
+        }
 
         //exposed methods
         return {

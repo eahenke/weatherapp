@@ -57,8 +57,10 @@
         //update city, weather, temp
         function update(result) {
             self.currentCity = result.city.name;
-            self.currentWeather = result.main;
+            self.currentWeather = result.description;
             self.currentTemp = result.temp;
+            self.dayOrNight = result.dayOrNight;
+            self.iconClass = result.iconClass;
         }
 
         getCurrent();

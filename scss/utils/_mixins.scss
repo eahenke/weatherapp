@@ -22,6 +22,15 @@
   vertical-align: middle;
   cursor: pointer;
 
+  &:focus {
+    border: none;
+    outline: 0;
+  }
+
+  &:active {
+    transform: scale(0.8);
+    
+  }
   /* Links in buttons fill whole button */
   & > a {
     display: block;

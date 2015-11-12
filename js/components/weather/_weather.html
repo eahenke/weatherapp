@@ -1,20 +1,18 @@
 <div class="weather-widget" ng-controller="WeatherCtrl as weather">
-        <div class="day-night day">
-            <div class="weather-wrap">
-                <h2 class="city"> {{ weather.currentCity }} </h2>
-                <div class="clock-wrap">
-                    <clock timezone="{{weather.timezone}}"></clock>
-                </div>
-                <div class="wthr-result">
-                    <div class="wthr-icon"></div>
-                    <div class="wthr-descrip"> {{ weather.currentWeather }} </div>
-                </div>
-
-                <p class="temp" ng-bind="weather.currentTemp | temperature"></p>
-                <form ng-submit="weather.searchByCity(weather.newCity)">
-                    <input type="text" placeholder="Search for a city" ng-model="weather.newCity">
-                    <button type="submit">Search</button>
-                </form>
-            </div>
+    <div class="weather-wrap {{weather.dayOrNight}}">
+        <h2 class="city"> {{ weather.currentCity }} </h2>
+        <div class="clock-wrap">
+            <clock timezone="{{weather.timezone}}"></clock>
         </div>
-    </div>  
+        <div class="wthr-result">
+            <div class="wthr-icon {{weather.iconClass}}"></div>
+            <div class="wthr-descrip"> {{ weather.currentWeather }} </div>
+        </div>
+
+        <p class="temp" ng-bind="weather.currentTemp | temperature"></p>
+        <form name="searchForm" ng-submit="searchForm.$valid && weather.searchByCity(weather.newCity)">
+            <input type="text" placeholder="Search for a city" ng-model="weather.newCity" required>
+            <button type="submit"><span class="icon-search"></span></button>
+        </form>
+    </div>
+</div>  

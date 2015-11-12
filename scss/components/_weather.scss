@@ -1,5 +1,3 @@
-$weather-wrap-height: 300;
-
 .weather {
   min-height: 100%;
   height: 100%;
@@ -8,34 +6,41 @@ $weather-wrap-height: 300;
 }
 
 .day {
-  // background-color: #B3E5FC;
+  background-color: rgba(0, 50, 255, 0.5);
+}
+
+.night {
+  background-color: rgba(0, 0, 0, 0.8);
 }
 
 .weather-wrap {
   @extend %center-block;
   width: 25%;
-  height: $weather-wrap-height * 1px;
+  // height: $weather-wrap-height * 1px;
   margin-top: 2em;
+  padding: 0.5em;
   text-align: center;
   // too broad, change this
   color: white;
-  background-color: rgba(0, 0, 0, 0.2);
+  // background-color: rgba(0, 0, 0, 0.8);
+  border-radius: 5%;
   overflow: hidden;
 
   & > * {
-    height: 20%;
     margin-top: 0;
-    margin-bottom: 0;
+    margin-bottom: 1rem;
   }
 
   form {
     display: block;
     width: 100%;
+    color: #333;
     padding: 0.5em;
     @extend %center-block;
 
     button {
-      @include flat-button(20%, 100%);
+      @include flat-button(20%, 40px);
+      border-radius: 5%;
     }
   }
 
@@ -45,6 +50,8 @@ $weather-wrap-height: 300;
 }
 
 .wthr-result {
+  overflow: hidden;
+
   div {
     display: inline-block;
     height: 100%;
@@ -53,20 +60,24 @@ $weather-wrap-height: 300;
   }
 
   .wthr-icon {
-    width: 30%;
+    width: 40%;
+    font-size: 4em;
   }
 
   .wthr-descrip {
-    width: 70%;
-    line-height: ($weather-wrap-height / 5) * 1px;
+    width: 60%;
+    line-height: 200%;
     vertical-align: middle;
+    text-align: center;
+
+    &:first-letter {
+      text-transform: uppercase;
+    }
   }
 }
 
 .temp {
   font-size: 1.3em;
-  line-height: ($weather-wrap-height / 5) * 1px;
-  vertical-align: middle;
 }
 
 .city {

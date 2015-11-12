@@ -1,3 +1,4 @@
+@charset "UTF-8";
 /*! normalize.css v3.0.2 | MIT License | git.io/normalize */
 /**
  * 1. Set default font family to sans-serif.
@@ -490,6 +491,96 @@ clock {
 }
 
 /* Ellipsis for cut-off text */
+@font-face {
+  font-family: 'weather-icons';
+  src: url("font/weather-icons.eot?89517961");
+  src: url("font/weather-icons.eot?89517961#iefix") format("embedded-opentype"), url("font/weather-icons.woff?89517961") format("woff"), url("font/weather-icons.ttf?89517961") format("truetype"), url("font/weather-icons.svg?89517961#weather-icons") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+/* Chrome hack: SVG is rendered more smooth in Windozze. 100% magic, uncomment if you need it. */
+/* Note, that will break hinting! In other OS-es font will be not as sharp as it could be */
+/*
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+  @font-face {
+    font-family: 'weather-icons';
+    src: url('../font/weather-icons.svg?89517961#weather-icons') format('svg');
+  }
+}
+*/
+[class^="icon-"]:before, [class*=" icon-"]:before {
+  font-family: "weather-icons";
+  font-style: normal;
+  font-weight: normal;
+  speak: none;
+  display: inline-block;
+  text-decoration: inherit;
+  width: 1em;
+  margin-right: .2em;
+  text-align: center;
+  /* opacity: .8; */
+  /* For safety - reset parent styles, that can break glyph codes*/
+  font-variant: normal;
+  text-transform: none;
+  /* fix buttons height, for twitter bootstrap */
+  line-height: 1em;
+  /* Animation center compensation - margins should be symmetric */
+  /* remove if not needed */
+  margin-left: .2em;
+  /* you can be more comfortable with increased icons size */
+  /* font-size: 120%; */
+  /* Font smoothing. That was taken from TWBS */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  /* Uncomment for 3D effect */
+  /* text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3); */
+}
+
+.icon-clear-day:before {
+  content: '\e807';
+}
+
+/* 'εáç' */
+.icon-clear-night:before {
+  content: '\e804';
+}
+
+/* 'εáä' */
+.icon-cloud-day:before {
+  content: '\e801';
+}
+
+/* 'εáü' */
+.icon-cloud-night:before {
+  content: '\e800';
+}
+
+/* 'εáÇ' */
+.icon-rain:before {
+  content: '\e802';
+}
+
+/* 'εáé' */
+.icon-thunder:before {
+  content: '\e803';
+}
+
+/* 'εáâ' */
+.icon-snow:before {
+  content: '\e805';
+}
+
+/* 'εáà' */
+.icon-mist:before {
+  content: '\e806';
+}
+
+/* 'εáå' */
+.icon-search:before {
+  content: '\e808';
+}
+
+/* 'εáê' */
 .weather {
   min-height: 100%;
   height: 100%;
@@ -497,34 +588,51 @@ clock {
   overflow: hidden;
 }
 
+.day {
+  background-color: rgba(0, 50, 255, 0.5);
+}
+
+.night {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
 .weather-wrap {
   width: 25%;
-  height: 300px;
   margin-top: 2em;
+  padding: 0.5em;
   text-align: center;
   color: white;
-  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 5%;
   overflow: hidden;
 }
 .weather-wrap > * {
-  height: 20%;
   margin-top: 0;
-  margin-bottom: 0;
+  margin-bottom: 1rem;
 }
 .weather-wrap form {
   display: block;
   width: 100%;
+  color: #333;
   padding: 0.5em;
 }
 .weather-wrap form button {
   width: 20%;
-  height: 100%;
+  height: 40px;
   border: none;
-  line-height: 100%;
+  line-height: 40px;
   text-align: center;
   vertical-align: middle;
   cursor: pointer;
   /* Links in buttons fill whole button */
+  border-radius: 5%;
+}
+.weather-wrap form button:focus {
+  border: none;
+  outline: 0;
+}
+.weather-wrap form button:active {
+  -webkit-transform: scale(0.8);
+          transform: scale(0.8);
 }
 .weather-wrap form button > a {
   display: block;
@@ -532,6 +640,9 @@ clock {
   height: 100%;
 }
 
+.wthr-result {
+  overflow: hidden;
+}
 .wthr-result div {
   display: inline-block;
   height: 100%;
@@ -539,18 +650,21 @@ clock {
   font-size: 1.5em;
 }
 .wthr-result .wthr-icon {
-  width: 30%;
+  width: 40%;
+  font-size: 4em;
 }
 .wthr-result .wthr-descrip {
-  width: 70%;
-  line-height: 60px;
+  width: 60%;
+  line-height: 200%;
   vertical-align: middle;
+  text-align: center;
+}
+.wthr-result .wthr-descrip:first-letter {
+  text-transform: uppercase;
 }
 
 .temp {
   font-size: 1.3em;
-  line-height: 60px;
-  vertical-align: middle;
 }
 
 .city {
