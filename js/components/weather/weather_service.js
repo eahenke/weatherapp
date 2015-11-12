@@ -51,6 +51,7 @@
                 var data = response.data;
                                 
                 if(data) {
+                    console.dir(data);
                     weather.city = {
                         name: data.name,
                         lat: data.coord.lat,
